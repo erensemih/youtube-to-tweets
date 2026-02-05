@@ -123,9 +123,11 @@ model = st.selectbox(
 )
 
 if st.button("Tweet üret", type="primary"):
-    if not os.getenv("OPENAI_API_KEY"):
-        st.error("OPENAI_API_KEY env değişkeni yok. Önce ayarla.")
+    if "OPENAI_API_KEY" not in st.secrets:
+        st.error("OPENAI_API_KEY Streamlit secrets içinde yok.")
         st.stop()
+
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
     try:
         video_id = extract_video_id(url)
